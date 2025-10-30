@@ -4,8 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Attendance App</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 24px; }
+    .card { max-width: 720px; margin: 0 auto; padding: 24px; border: 1px solid #ddd; border-radius: 8px; }
+    button { padding: 8px 14px; }
+    code { background: #f6f8fa; padding: 2px 6px; border-radius: 4px; }
+  </style>
 </head>
 <body>
-  <div id="root"></div>
-</body>
+  <div class="card">
+    <h1>Attendance Portal</h1>
+    <p>This page lets you verify the backend is running and send a test email.</p>
+
+    <h2>Backend Health</h2>
+    <p id="health">Checking...</p>
+    <button id="refresh">Refresh</button>
+
+    <h2>SMTP Test</h2>
+    <button id="send">Send test email</button>
+    <p id="result"></p>
+    <hr/>
+    <p><strong>Backend URL:</strong> <code>http://localhost:5000</code></p>
+  </div>
+
+  <script>
+    const healthEl = document.getElementById('health');
+    const resultEl = document.getElementById('result');
+    const refreshBtn = document.getElementById('refresh');
+    const sendBtn = document.getElementById('send');
+    const API = 'http://localhost:5000';
+
+    async function checkHealth() {
+      healthEl.textContent = 'Checking...';
+      try {
+        const res = await fetch(`${API}/api/health`);
+        const data = await res.json();
+        healthEl.textContent = `OK @ ${data.time}`;
+      } catch (e) {
+        healthEl.textContent = `Error: ${e.message}`;
+      }
+    }
+
+    async function sendEmail() {
+      resultEl.textContent = 'Sending...';
+      try {
+        const res = await fetch(`${API}/api/test-email/send`, { method: 'POST' });
+        const data = await res.json();
+        if (data.ok) resultEl.textContent = `Sent! messageId: ${data.messageId}`;
+        else resultEl.textContent = `Failed: ${data.error || 'Unknown error'}`;
+      } catch (e) {
+        resultEl.textContent = `Error: ${e.message}`;
+      }
+    }
+
+    refreshBtn.addEventListener('click', checkHealth);
+    sendBtn.addEventListener('click', sendEmail);
+    checkHealth();
+  </script>
+ </body>
 </html>
