@@ -1,17 +1,11 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
+const { getTransporter } = require('../utils/mailer');
 
 const router = express.Router();
 
 router.post('/send', async (req, res) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: false,
-      requireTLS: true,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    });
+    const transporter = await getTransporter();
 
     const info = await transporter.sendMail({
       from: process.env.SMTP_USER,
@@ -29,13 +23,7 @@ router.post('/send', async (req, res) => {
 
 router.get('/verify', async (req, res) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: false,
-      requireTLS: true,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    });
+    const transporter = await getTransporter();
 
     await transporter.verify();
     res.json({ ok: true, message: 'SMTP connection successful' });
