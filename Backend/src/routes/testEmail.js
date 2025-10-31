@@ -1,4 +1,5 @@
 const express = require('express');
+const nodemailer = require('nodemailer');
 const { getTransporter } = require('../utils/mailer');
 
 const router = express.Router();
@@ -14,7 +15,8 @@ router.post('/send', async (req, res) => {
       text: 'This is a test email from Attendance app.',
     });
 
-    res.json({ ok: true, messageId: info.messageId });
+    const previewUrl = nodemailer.getTestMessageUrl ? nodemailer.getTestMessageUrl(info) : undefined;
+    res.json({ ok: true, messageId: info.messageId, previewUrl });
   } catch (err) {
     console.error('SMTP send error:', err);
     res.status(500).json({ ok: false, error: err.message });

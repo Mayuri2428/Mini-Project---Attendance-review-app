@@ -37,7 +37,7 @@
     async function checkHealth() {
       healthEl.textContent = 'Checking...';
       try {
-        const res = await fetch(`${API}/api/health`);
+        const res = await fetch(`${API}/health`);
         const data = await res.json();
         healthEl.textContent = `OK @ ${data.time}`;
       } catch (e) {
@@ -48,7 +48,7 @@
     async function sendEmail() {
       resultEl.textContent = 'Sending...';
       try {
-        const res = await fetch(`${API}/api/test-email/send`, { method: 'POST' });
+        const res = await fetch(`${API}/test-email/send`, { method: 'POST' });
         const data = await res.json();
         if (data.ok) resultEl.textContent = `Sent! messageId: ${data.messageId}`;
         else resultEl.textContent = `Failed: ${data.error || 'Unknown error'}`;

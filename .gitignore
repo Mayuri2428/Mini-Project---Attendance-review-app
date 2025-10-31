@@ -6,3 +6,4 @@ dist/
 .DS_Store
 Thumbs.db
 Backend/src/db/*.db
+Backend/Backend/
