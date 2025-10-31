@@ -1,0 +1,9 @@
+[build]
+  publish = "frontend/public"
+
+# Proxy API requests from Netlify to Railway backend
+[[redirects]]
+  from = "/api/*"
+  to = "https://web-production-def4f.up.railway.app/:splat"
+  status = 200
+  force = true
