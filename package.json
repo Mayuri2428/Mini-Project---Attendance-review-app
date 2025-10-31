@@ -1,0 +1,12 @@
+{
+  "name": "attendance-root",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm install --prefix Backend",
+    "start": "npm start --prefix Backend"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
