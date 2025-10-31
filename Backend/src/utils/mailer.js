@@ -4,13 +4,20 @@ require('dotenv').config();
 let cachedTransporter;
 
 async function createTransporter() {
-  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+  const host = process.env.SMTP_HOST || '';
+  const user = process.env.SMTP_USER || '';
+  const pass = process.env.SMTP_PASS || '';
+
+  const looksPlaceholder = (v) => /^(your_|<.*>|\s*$)/i.test(v) || /example/i.test(v);
+  const hasRealCreds = host && user && pass && !looksPlaceholder(host) && !looksPlaceholder(user) && !looksPlaceholder(pass) && host !== 'your_smtp_host';
+
+  if (hasRealCreds) {
     return nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
+      host,
       port: Number(process.env.SMTP_PORT || 587),
       secure: false,
       requireTLS: true,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      auth: { user, pass },
     });
   }
   const test = await nodemailer.createTestAccount();
