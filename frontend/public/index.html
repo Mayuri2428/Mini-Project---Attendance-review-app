@@ -24,7 +24,7 @@
     <button id="send">Send test email</button>
     <p id="result"></p>
     <hr/>
-    <p><strong>Backend URL:</strong> <code>/api (proxied)</code></p>
+    <p><strong>Backend URL:</strong> <code>https://web-production-def4f.up.railway.app/api</code></p>
   </div>
 
   <script>
@@ -32,7 +32,7 @@
     const resultEl = document.getElementById('result');
     const refreshBtn = document.getElementById('refresh');
     const sendBtn = document.getElementById('send');
-    const API = '/api';
+    const API = 'https://web-production-def4f.up.railway.app/api';
 
     async function checkHealth() {
       healthEl.textContent = 'Checking...';
